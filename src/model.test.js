@@ -1,0 +1,5 @@
+import {test} from 'node:test'; import assert from 'node:assert/strict'; import {apply,approve,advance} from './model.js';
+const event=()=>({members:['主催'],applicants:[],max:3,status:'募集中',confirmed:[]});
+test('申請には同意と参加可能な日時が必要',()=>{const e=event();assert.throws(()=>apply(e,'学生',['参加できる'],false));assert.throws(()=>apply(e,'学生',['参加できない'],true));apply(e,'学生',['参加できる'],true);assert.throws(()=>apply(e,'学生',['参加できる'],true));assert.equal(e.members.length,1);approve(e,'学生');assert.equal(e.members.length,2);});
+test('定員を超えて承認できない',()=>{const e=event();e.members.push('A','B');e.applicants.push({name:'C',state:'未確認'});assert.throws(()=>approve(e,'C'));});
+test('開催申請の人数・必須情報・全員確認・24時間期限を検証',()=>{const e=event();assert.throws(()=>advance(e));e.members.push('A','B');advance(e);assert.throws(()=>advance(e));Object.assign(e,{place:'公共施設',when:'2030-01-01T12:00:00+09:00',duration:'2時間',cost:'各自500円'});advance(e);assert.throws(()=>advance(e));e.confirmed=[...e.members];assert.throws(()=>advance(e,new Date('2030-01-01T00:00:00+09:00').getTime()));advance(e,new Date('2029-12-01').getTime());assert.equal(e.status,'運営確認中');advance(e);assert.equal(e.status,'開催確定');});

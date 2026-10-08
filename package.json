@@ -1,1 +1,20 @@
-{"name":"kikkake","version":"0.1.0","private":true,"type":"module","scripts":{"dev":"vite --host 0.0.0.0","build":"vite build","preview":"vite preview --host 0.0.0.0","test":"node --test src/model.test.js"},"devDependencies":{"vite":"7.1.12"}}
+{
+  "name": "kikkake",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite --host 0.0.0.0",
+    "build": "vite build",
+    "preview": "vite preview --host 0.0.0.0",
+    "test": "node --test src/model.test.js server/app.test.js",
+    "api": "node server/index.js",
+    "start": "node server/index.js"
+  },
+  "devDependencies": {
+    "vite": "7.1.12"
+  },
+  "engines": {
+    "node": ">=24.0.0"
+  }
+}
